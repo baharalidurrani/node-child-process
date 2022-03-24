@@ -1,6 +1,13 @@
-setTimeout(() => {
-  console.log("Hello Child Completed");
-}, 5000);
+try {
+  setTimeout(() => {
+    console.log("Hello Child Completed");
+    process.send({ message: true });
+  }, 5000);
 
-process.send({ message: true });
-throw new Error("testing");
+  // throw new Error("testing");
+} catch (error) {
+  // Serializing Error Object
+  process.send({
+    error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+  });
+}
